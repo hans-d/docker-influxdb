@@ -7,9 +7,10 @@ InfluxDB image
 Tags
 ----
 
-    latest -> 0.9.1
-    0.9    -> 0.9.1
+    latest -> 0.9.2
+    0.9    -> 0.9.2
 
+    0.9.2  -> 0.9.2
     0.9.1  -> 0.9.1
 
 Running

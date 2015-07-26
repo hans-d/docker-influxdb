@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 MAINTAINER Hans Donner
 # Based on https://github.com/tutumcloud/influxdb/blob/master/0.9/Dockerfile
 
-ENV INFLUXDB_VERSION 0.9.1
+ENV INFLUXDB_VERSION 0.9.2
 
 RUN apt-get update && \
     apt-get install -y curl && \
@@ -26,11 +26,6 @@ EXPOSE 8083
 # HTTP API
 EXPOSE 8086
 
-# Raft port (for clustering, don't expose publicly!)
-#EXPOSE 8090
-
-# Protobuf port (for clustering, don't expose publicly!)
-#EXPOSE 8099
 
 VOLUME ["/data"]
 
