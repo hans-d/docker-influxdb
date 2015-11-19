@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 MAINTAINER Hans Donner
 # Based on https://github.com/tutumcloud/influxdb/blob/master/0.9/Dockerfile
 
-ENV INFLUXDB_VERSION 0.9.2
+ENV INFLUXDB_VERSION 0.9.4.2
 
 RUN apt-get update && \
     apt-get install -y curl && \
