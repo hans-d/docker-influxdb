@@ -60,6 +60,15 @@ fi
 #    sed -i -r -e "/^\s+\[input_plugins.udp\]/, /^$/ { s/4444/${UDP_PORT}/; }" ${CONFIG_FILE}
 #fi
 
+echo "influxdb configuration: "
+cat ${CONFIG_FILE}
+echo "=> Starting InfluxDB ..."
+if [ -n "${JOIN}" ]; then
+  exec influxd -config=${CONFIG_FILE} -join ${JOIN} &
+else
+  exec influxd -config=${CONFIG_FILE} &
+fi
+
 # Pre create database on the initiation of the container
 if [ -n "${PRE_CREATE_DB}" ]; then
     echo "=> About to create the following database: ${PRE_CREATE_DB}"
@@ -103,6 +112,4 @@ else
     echo "=> No database need to be pre-created"
 fi
 
-echo "=> Starting InfluxDB ..."
-
-exec ${INFLUXD} -config=${CONFIG_FILE}
+fg
