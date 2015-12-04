@@ -4,15 +4,20 @@ MAINTAINER Hans Donner
 
 ENV INFLUXDB_VERSION 0.9.5.1
 
-RUN apt-get update && \
-    apt-get install -y curl && \
-    curl -o /tmp/influxdb_latest_amd64.deb http://s3.amazonaws.com/influxdb/influxdb_${INFLUXDB_VERSION}_amd64.deb && \
-    dpkg -i /tmp/influxdb_latest_amd64.deb && \
-    rm /tmp/influxdb_latest_amd64.deb && \
-    apt-get clean && \
+RUN apt-get update ;\
+    apt-get install -y curl ;\
+    \
+    curl -o /tmp/influxdb_latest_amd64.deb http://s3.amazonaws.com/influxdb/influxdb_${INFLUXDB_VERSION}_amd64.deb ;\
+    dpkg -i /tmp/influxdb_latest_amd64.deb ;\
+    \
+    mkdir /config ;\
+    influxd config > /config/config.toml ;\
+    sed -i 's|\(dir = \)"/root/.influxdb/|\1"/data/|' /config/config.toml ;\
+    sed -i 's|\(dir = \)"/data/data|\1"/data/db|' /config/config.toml ;\
+    \
+    apt-get clean ;\
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ADD config.toml /config/config.toml
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
 

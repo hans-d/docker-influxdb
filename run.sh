@@ -2,6 +2,8 @@
 
 set -m
 CONFIG_FILE="/config/config.toml"
+INFLUXD=influxd
+
 
 # Dynamically change the value of 'max-open-shards' to what 'ulimit -n' returns
 sed -i "s/^max-open-shards.*/max-open-shards = $(ulimit -n)/" ${CONFIG_FILE}
@@ -63,7 +65,7 @@ if [ -n "${PRE_CREATE_DB}" ]; then
         echo "=> Database had been created before, skipping ..."
     else
         echo "=> Starting InfluxDB ..."
-        exec /opt/influxdb/influxd -config=${CONFIG_FILE} &
+        exec ${INFLUXD} -config=${CONFIG_FILE} &
         PASS=${INFLUXDB_INIT_PWD:-root}
         arr=$(echo ${PRE_CREATE_DB} | tr ";" "\n")
 
@@ -80,7 +82,7 @@ if [ -n "${PRE_CREATE_DB}" ]; then
         for x in $arr
         do
             echo "=> Creating database: ${x}"
-            /opt/influxdb/influx -host=localhost -port=8086 -username=root -password="${PASS}" -execute="create database \"${x}\""
+            ${INFLUXD} -host=localhost -port=8086 -username=root -password="${PASS}" -execute="create database \"${x}\""
         done
         echo ""
 
@@ -94,4 +96,4 @@ fi
 
 echo "=> Starting InfluxDB ..."
 
-exec /opt/influxdb/influxd -config=${CONFIG_FILE}
+exec ${INFLUXD} -config=${CONFIG_FILE}
