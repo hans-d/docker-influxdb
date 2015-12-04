@@ -82,7 +82,7 @@ if [ -n "${PRE_CREATE_DB}" ]; then
         for x in $arr
         do
             echo "=> Creating database: ${x}"
-            ${INFLUXD} -host=localhost -port=8086 -username=root -password="${PASS}" -execute="create database \"${x}\""
+            ${INFLUXD} -hostname=localhost -port=8086 -username=root -password="${PASS}" -execute="create database \"${x}\""
         done
         echo ""
 
